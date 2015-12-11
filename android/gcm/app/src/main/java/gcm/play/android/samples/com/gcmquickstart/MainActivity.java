@@ -164,6 +164,8 @@ public class MainActivity extends AppCompatActivity {
                         tv.setText("you're already registered");
                         Intent intent = new Intent(that, Dash.class);
                         startActivity(intent);
+
+                        //setContentView(R.layout.activity_principal);
                     }
                 }
             }

@@ -68,6 +68,14 @@
         <activity
             android:name=".Dash"
             android:label="@string/title_activity_dash"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".principal"
+            android:label="@string/title_activity_principal"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".chat"
+            android:label="@string/title_activity_chat"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

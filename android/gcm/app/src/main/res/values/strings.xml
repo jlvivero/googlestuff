@@ -9,4 +9,11 @@
     <string name="gcm_defaultSenderId">413828675093</string>
     <string name="title_activity_dashboard">dashboard</string>
     <string name="title_activity_dash">Dash</string>
+    <string name="title_activity_principal">principal</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_chat">chat</string>
 </resources>
