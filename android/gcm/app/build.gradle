@@ -27,6 +27,12 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+<<<<<<< HEAD
+=======
+    compile 'com.google.android.gms:play-services-gcm:8.1.0'
+
+    compile 'com.android.support:appcompat-v7:23.0.0'
+>>>>>>> parent of 3d506e0... added REST functions, applications is still not properly implemented
 
     // Testing dependencies
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.1'
