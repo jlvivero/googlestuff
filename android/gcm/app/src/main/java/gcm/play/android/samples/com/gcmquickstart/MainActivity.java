@@ -30,6 +30,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -45,6 +47,7 @@ import java.util.List;
 import gcm.play.android.samples.com.gcmquickstart.API.MessApi;
 import gcm.play.android.samples.com.gcmquickstart.Models.GlobalMessage;
 import gcm.play.android.samples.com.gcmquickstart.Models.PostCallback;
+import gcm.play.android.samples.com.gcmquickstart.Models.Registration;
 import gcm.play.android.samples.com.gcmquickstart.Models.Users;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -59,8 +62,12 @@ public class MainActivity extends AppCompatActivity {
     // my variables HERE
     private Users userList = new Users();
     private TextView tv;
-
+    Button click;
     String API = "http://test-scala-server.herokuapp.com";
+    MessApi messenger;
+    EditText edit;
+
+
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private ProgressBar mRegistrationProgressBar;
     private TextView mInformationTextView;
@@ -74,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        click = (Button) findViewById(R.id.Login);
+        edit = (EditText)findViewById(R.id.userEdit);
 
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
@@ -102,13 +112,41 @@ public class MainActivity extends AppCompatActivity {
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
-        tv = (TextView) findViewById(R.id.tv);
-        //OBTAINING THE LIST OF USERS STUFF
-        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(API).build();
-        //creates an adapter for retrofit with the base url
 
-        MessApi messenger = restAdapter.create(MessApi.class);
+        //creates an adapter for retrofit with the base url
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(API).build();
+
         //creates server for adapter with our get class
+       messenger = restAdapter.create(MessApi.class);
+
+        tv = (TextView) findViewById(R.id.tv);
+        //button here HANDLING THE LOGIN
+        click.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(!edit.getText().toString().equals(""))
+                {
+                    String MY_PREFS_NAME = "";
+                    SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+                    String id = prefs.getString("token", "token");
+                    messenger.register(new Registration(edit.getText().toString(), id), new Callback<PostCallback>() {
+                        @Override
+                        public void success(PostCallback postCallback, Response response) {
+                            tv.setText("you've successfully registered");
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            tv.setText("registration failed");
+                        }
+                    });
+                }
+            }
+        });
+
+
+        //OBTAINING THE LIST OF USERS STUFF
+
 
         //NOW, we need to call for response
         //retrofit using gson for JSON-POJO STUFF
@@ -117,12 +155,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void success(Users users, Response response) {
                 userList.copyUsers(users);
-                tv.setText("status: " + userList.getStatus() + "data" + userList.getData());
+                //tv.setText("status: " + userList.getStatus() + "data" + userList.getData());
             }
 
             @Override
             public void failure(RetrofitError error) {
-                tv.setText(error.getMessage());
+                //tv.setText(error.getMessage());
             }
         });
 
@@ -147,12 +185,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void success(PostCallback s, Response response) {
                 //aqui pondrias donde quieres que aparesca el mensaje de la respuesta
-                tv.setText("status: " + s.getStatus() + ", message: " + s.getMessage());
+               // tv.setText("status: " + s.getStatus() + ", message: " + s.getMessage());
             }
 
             @Override
             public void failure(RetrofitError error) {
-                tv.setText(error.getMessage());
+                //tv.setText(error.getMessage());
             }
         });
 
@@ -182,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
             de los post y get original
             este solo manda una notificacion asi que solo ocupa el url del usuario
          */
-        messenger.notifyResponse("Itzel");
+        //messenger.notifyResponse("Itzel");
 
     }
 

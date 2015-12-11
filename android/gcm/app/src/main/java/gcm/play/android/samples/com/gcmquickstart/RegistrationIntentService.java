@@ -33,6 +33,7 @@ public class RegistrationIntentService extends IntentService {
 
     private static final String TAG = "RegIntentService";
     private static final String[] TOPICS = {"global"};
+    public static final String MY_PREFS_NAME = "";
 
     public RegistrationIntentService() {
         super(TAG);
@@ -54,7 +55,9 @@ public class RegistrationIntentService extends IntentService {
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             // [END get_token]
             Log.i(TAG, "GCM Registration Token: " + token);
-
+            SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+            editor.putString("token", token);
+            editor.commit();
             // TODO: Implement this method to send any registration to your app's servers.
             sendRegistrationToServer(token);
 
