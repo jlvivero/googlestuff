@@ -75,23 +75,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        persistencia yourPrefrence = persistencia.getInstance(Context.MODE_PRIVATE);
-
-
-        String value = persistencia.getData("user");
-        if(value!="")
-        {
-
-        }
-        else
-        {
-            Intent i = new Intent(this, registro.class);
-
-            startActivity(i);
-
-        }
-
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
