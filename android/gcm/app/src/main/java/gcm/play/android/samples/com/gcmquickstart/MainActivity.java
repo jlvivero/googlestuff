@@ -126,20 +126,41 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!edit.getText().toString().equals(""))
                 {
-                    String MY_PREFS_NAME = "";
-                    SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-                    String id = prefs.getString("token", "token");
-                    messenger.register(new Registration(edit.getText().toString(), id), new Callback<PostCallback>() {
-                        @Override
-                        public void success(PostCallback postCallback, Response response) {
-                            tv.setText("you've successfully registered");
-                        }
+                    final String MY_PREFS_NAME = "";
+                    SharedPreferences settings = getSharedPreferences(MY_PREFS_NAME, 0);
+                    boolean val = settings.getBoolean("register", false);
+                    if(!val)
+                    {
+                        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+                        final String id = prefs.getString("token", "token");
+                        messenger.register(new Registration(edit.getText().toString(), id), new Callback<PostCallback>() {
+                            @Override
+                            public void success(PostCallback postCallback, Response response) {
+                                tv.setText("you've successfully registered");
+                                SharedPreferences settings = getSharedPreferences(MY_PREFS_NAME, 0);
+                                SharedPreferences.Editor editor = settings.edit();
+                                editor.putBoolean("register", true);
+                                editor.putString("user",edit.getText().toString());
 
-                        @Override
-                        public void failure(RetrofitError error) {
-                            tv.setText("registration failed");
-                        }
-                    });
+                                // Commit the edits!
+                                editor.commit();
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                tv.setText("registration failed");
+                                SharedPreferences settings = getSharedPreferences(MY_PREFS_NAME, 0);
+                                SharedPreferences.Editor editor = settings.edit();
+                                editor.putBoolean("register", false);
+                                // Commit the edits!
+                                editor.commit();
+                            }
+                        });
+                    }
+                    else
+                    {
+                        tv.setText("you're already registered");
+                    }
                 }
             }
         });
