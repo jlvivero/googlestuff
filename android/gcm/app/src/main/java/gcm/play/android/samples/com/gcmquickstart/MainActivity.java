@@ -41,9 +41,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gcm.play.android.samples.com.gcmquickstart.API.MessApi;
 import gcm.play.android.samples.com.gcmquickstart.Models.GlobalMessage;
 import gcm.play.android.samples.com.gcmquickstart.Models.PostCallback;
@@ -66,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
     String API = "http://test-scala-server.herokuapp.com";
     MessApi messenger;
     EditText edit;
+    //thanks javascript for teaching me that that = this xD
+    Context that = this;
 
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(API).build();
 
         //creates server for adapter with our get class
-       messenger = restAdapter.create(MessApi.class);
+        messenger = restAdapter.create(MessApi.class);
 
         tv = (TextView) findViewById(R.id.tv);
         //button here HANDLING THE LOGIN
@@ -144,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
 
                                 // Commit the edits!
                                 editor.commit();
+                                //create an intent to change activity
+                                Intent intent = new Intent(that, Dash.class);
+                                startActivity(intent);
                             }
 
                             @Override
@@ -160,6 +162,8 @@ public class MainActivity extends AppCompatActivity {
                     else
                     {
                         tv.setText("you're already registered");
+                        Intent intent = new Intent(that, Dash.class);
+                        startActivity(intent);
                     }
                 }
             }
@@ -175,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         messenger.getFeed(new Callback<Users>() {
             @Override
             public void success(Users users, Response response) {
-                userList.copyUsers(users);
+                //userList.copyUsers(users);
                 //tv.setText("status: " + userList.getStatus() + "data" + userList.getData());
             }
 
@@ -222,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
             como arriba, igual con el MessAPI post
          */
         //en vez de itzel pondrias una variable con alguno de los usuarios aqui le darias click a algun usuario
-        messenger.postToUser("Itzel", jsonResponse, new Callback<PostCallback>() {
+        messenger.postToUser("JL", jsonResponse, new Callback<PostCallback>() {
             @Override
             public void success(PostCallback postCallback, Response response) {
                 //aqui pondrias lo que quieres que haga la aplicacion despues de mandar el mensaje

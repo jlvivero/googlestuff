@@ -7,4 +7,6 @@
         sending the fetched token to the server or subscribing to the PubSub topic. Please try
         running the sample again.</string>
     <string name="gcm_defaultSenderId">413828675093</string>
+    <string name="title_activity_dashboard">dashboard</string>
+    <string name="title_activity_dash">Dash</string>
 </resources>
