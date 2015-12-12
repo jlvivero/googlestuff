@@ -22,7 +22,7 @@ import retrofit.client.Response;
 
 public class chat extends AppCompatActivity {
     EditText mensaje;
-    ListView pantalla;
+
     String API = "http://test-scala-server.herokuapp.com";
     MessApi messenger;
     Bundle extras;
@@ -39,9 +39,9 @@ public class chat extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        pantalla=(ListView)findViewById(R.id.listView);
+
         mensaje=(EditText)findViewById(R.id.editText);
-        tv = (TextView)findViewById(R.id.textview1);
+        tv = (TextView)findViewById(R.id.editText1);
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(API).build();
         messenger = restAdapter.create(MessApi.class);
         tv.setTextColor(Color.BLACK);
@@ -53,12 +53,16 @@ public class chat extends AppCompatActivity {
                 messenger.postToUser(user, new GlobalMessage(mensaje.getText().toString(), "JL"), new Callback<PostCallback>() {
                     @Override
                     public void success(PostCallback postCallback, Response response) {
-                        String whatever;
-                        whatever = mensaje.getText().toString();
+                        String whatever,contenido="";
+                        if(tv.getText().toString()!="")
+                            contenido=tv.getText().toString()+"\n";
+                        whatever = "you: "+mensaje.getText().toString();
+                        mensaje.setText("");
+                        contenido+=whatever;
                         tv.setTextColor(Color.BLACK);
-                        tv.setText(whatever);
-                        Snackbar.make(view, "message sent", Snackbar.LENGTH_LONG)
-                               .setAction("Action", null).show();
+                        tv.setText(contenido);
+                        //Snackbar.make(view, "message sent", Snackbar.LENGTH_LONG)
+                          //     .setAction("Action", null).show();
                     }
 
                     @Override

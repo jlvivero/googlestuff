@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        registro();
+
         click = (Button) findViewById(R.id.Login);
         edit = (EditText)findViewById(R.id.userEdit);
 
@@ -249,6 +251,18 @@ public class MainActivity extends AppCompatActivity {
             este solo manda una notificacion asi que solo ocupa el url del usuario
          */
         //messenger.notifyResponse("Itzel");
+
+    }
+
+    void registro()
+    {
+        final String MY_PREFS_NAME = "";
+        SharedPreferences settings = getSharedPreferences(MY_PREFS_NAME, 0);
+        boolean val = settings.getBoolean("register", false);
+        if(val) {
+            Intent intent = new Intent(that, Dash.class);
+            startActivity(intent);
+        }
 
     }
 
