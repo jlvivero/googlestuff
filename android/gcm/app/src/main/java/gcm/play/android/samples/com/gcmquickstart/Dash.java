@@ -13,10 +13,19 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import gcm.play.android.samples.com.gcmquickstart.API.MessApi;
+import gcm.play.android.samples.com.gcmquickstart.Models.Users;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 public class Dash extends AppCompatActivity {
 
     ListView lista;
     Context that = this;
+    String API = "http://test-scala-server.herokuapp.com";
+    MessApi messenger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +36,6 @@ public class Dash extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         lista = (ListView) findViewById(R.id.listView);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,29 +44,56 @@ public class Dash extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        list();
+
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(API).build();
+        messenger = restAdapter.create(MessApi.class);
+        messenger.getFeed(new Callback<Users>() {
+            @Override
+            public void success(Users users, Response response) {
+                list(users);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                list(null);
+            }
+        });
+
     }
 
-    void list() {
+    void list(Users user) {
         // Defined Array values to show in ListView
+        String[] values;
+        if(user != null)
+        {
+            values = new String[user.getData().size()];
+            for(int i = 0; i < user.getData().size(); i++)
+            {
+                values[i] = user.getData().get(i);
+            }
 
-        String[] values = new String[]{"Android List View",
+        }
+        else
+        {
+            values = new String[]{
+                    "Android List View",
 
-                "Adapter implementation",
+                    "Adapter implementation",
 
-                "Simple List View In Android",
+                    "Simple List View In Android",
 
-                "Create List View Android",
+                    "Create List View Android",
 
-                "Android Example",
+                    "Android Example",
 
-                "List View Source Code",
+                    "List View Source Code",
 
-                "List View Array Adapter",
+                    "List View Array Adapter",
 
-                "Android Example List View"
+                    "Android Example List View"
 
-        };
+            };
+        }
 
 
         // Define a new Adapter
@@ -113,13 +148,10 @@ public class Dash extends AppCompatActivity {
                         .show();
 
                 Intent intent = new Intent(that, chat.class);
+                intent.putExtra("Receive", itemValue);
                 startActivity(intent);
             }
-
-
         });
-
-
 
     }
 }

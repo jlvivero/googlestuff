@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
         //NOW, we need to call for response
         //retrofit using gson for JSON-POJO STUFF
 
-        messenger.getFeed(new Callback<Users>() {
+        /*messenger.getFeed(new Callback<Users>() {
             @Override
             public void success(Users users, Response response) {
                 //userList.copyUsers(users);
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
             public void failure(RetrofitError error) {
                 //tv.setText(error.getMessage());
             }
-        });
+        });*/
 
         //aqui voy a poner los metodos de todos los request, pero obviamente se tienen que arreglar
         //y poner donde van realmente, por ejemplo este post podria ir en un boton
@@ -204,11 +204,11 @@ public class MainActivity extends AppCompatActivity {
          */
 
         //aqui en vez de "prueba", "JL" pondrias las variables de el modelo Global Message
-        GlobalMessage jsonResponse = new GlobalMessage("prueba", "JL");
+        //GlobalMessage jsonResponse = new GlobalMessage("prueba", "JL");
 
 
 
-        messenger.postFeed(jsonResponse, new Callback<PostCallback>() {
+        /*messenger.postFeed(jsonResponse, new Callback<PostCallback>() {
             @Override
             public void success(PostCallback s, Response response) {
                 //aqui pondrias donde quieres que aparesca el mensaje de la respuesta
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
             public void failure(RetrofitError error) {
                 //tv.setText(error.getMessage());
             }
-        });
+        });*/
 
         /*
             Post directo a una persona
@@ -228,7 +228,8 @@ public class MainActivity extends AppCompatActivity {
             como arriba, igual con el MessAPI post
          */
         //en vez de itzel pondrias una variable con alguno de los usuarios aqui le darias click a algun usuario
-        messenger.postToUser("JL", jsonResponse, new Callback<PostCallback>() {
+
+        /*messenger.postToUser("JL", jsonResponse, new Callback<PostCallback>() {
             @Override
             public void success(PostCallback postCallback, Response response) {
                 //aqui pondrias lo que quieres que haga la aplicacion despues de mandar el mensaje
@@ -240,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
             public void failure(RetrofitError error) {
 
             }
-        });
+        });*/
 
         /*
             Notify a todos los usuarios, lo mismo aplica con las cosas que no estoy repitiendo sacalas

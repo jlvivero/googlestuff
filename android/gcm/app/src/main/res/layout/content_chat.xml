@@ -30,4 +30,19 @@
         android:layout_alignRight="@+id/editText"
         android:layout_alignEnd="@+id/editText"
         android:layout_above="@+id/editText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="something goes here"
+        android:id="@+id/textview1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/listView2"
+        android:layout_alignEnd="@+id/listView2"
+        android:layout_alignParentEnd="true"
+        android:autoText="false"
+        android:editable="false" />
+
 </RelativeLayout>
