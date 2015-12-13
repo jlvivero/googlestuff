@@ -83,8 +83,13 @@ public class MyGcmListenerService extends GcmListenerService {
         editor.putString("message", message);
         editor.commit();
         Intent intent = new Intent(this, chat.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("Receive", sender);
+        //sendBroadcast(intent);
+        Intent send = new Intent();
+        send.setAction("filter");
+        send.putExtra("Receive", sender);
+        sendBroadcast(send);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 

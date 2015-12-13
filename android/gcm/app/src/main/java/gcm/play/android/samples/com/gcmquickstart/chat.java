@@ -1,8 +1,13 @@
 package gcm.play.android.samples.com.gcmquickstart;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import gcm.play.android.samples.com.gcmquickstart.API.MessApi;
@@ -29,6 +35,8 @@ public class chat extends AppCompatActivity {
     String user;
     TextView tv;
 
+    private BroadcastReceiver activateStuff;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +44,7 @@ public class chat extends AppCompatActivity {
         if (extras != null) {
             user = extras.getString("Receive");
         }
+
         setContentView(R.layout.activity_chat);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,6 +59,7 @@ public class chat extends AppCompatActivity {
         messenger = restAdapter.create(MessApi.class);
         tv.setTextColor(Color.BLACK);
         getstuff();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,30 +67,45 @@ public class chat extends AppCompatActivity {
                 messenger.postToUser(user, new GlobalMessage(mensaje.getText().toString(), sender), new Callback<PostCallback>() {
                     @Override
                     public void success(PostCallback postCallback, Response response) {
-                        String whatever,contenido="";
-                        if(tv.getText().toString()!="")
-                            contenido=tv.getText().toString()+"\n";
-                        whatever = "you: "+mensaje.getText().toString();
+                        String whatever, contenido = "";
+                        if (tv.getText().toString() != "")
+                            contenido = tv.getText().toString() + "\n";
+                        whatever = "you: " + mensaje.getText().toString();
                         mensaje.setText("");
-                        contenido+=whatever;
+                        contenido += whatever;
                         tv.setTextColor(Color.BLACK);
                         tv.setText(contenido);
                         //Snackbar.make(view, "message sent", Snackbar.LENGTH_LONG)
-                          //     .setAction("Action", null).show();
+                        //     .setAction("Action", null).show();
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
                         Snackbar.make(view, "error message", Snackbar.LENGTH_LONG)
-                               .setAction("Action", null).show();
+                                .setAction("Action", null).show();
                     }
                 });
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                 //       .setAction("Action", null).show();
+                //       .setAction("Action", null).show();
             }
         });
-
-
+        IntentFilter filter = new IntentFilter("filter");
+        this.registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //user = extras.getString("Receive");
+                user = intent.getExtras().getString("Receive");
+                String MY_PREFS_NAME = "";
+                SharedPreferences settings = getSharedPreferences(MY_PREFS_NAME, 0);
+                String val = settings.getString("sender", " ");
+                if(val.equals(user))
+                {
+                    String val2 = val + ": " + settings.getString("message", " ");
+                    val2 = tv.getText().toString() + "\n" + val2;
+                    tv.setText(val2);
+                }
+            }
+        },filter);
     }
 
     void getstuff()
@@ -90,10 +115,11 @@ public class chat extends AppCompatActivity {
         String val = settings.getString("sender", " ");
         if(val.equals(user))
         {
-            String val2 = settings.getString("message", " ");
+            String val2 = val + ": " + settings.getString("message", " ");
+            val2 = tv.getText().toString() + "\n" + val2;
             tv.setText(val2);
-            tv.setTextColor(Color.BLACK);
         }
+
     }
 
 }
