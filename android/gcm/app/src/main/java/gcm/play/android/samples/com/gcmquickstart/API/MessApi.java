@@ -23,6 +23,9 @@ public interface MessApi
     @GET("/notify/{user}")
     void notifyResponse(@Path("user") String user);
 
+    @GET("/notify")
+    void notifyEveryone(Callback<String> status);
+
     @POST("/sendgcm")
     void postFeed(@Body GlobalMessage message, Callback<PostCallback> response);
 

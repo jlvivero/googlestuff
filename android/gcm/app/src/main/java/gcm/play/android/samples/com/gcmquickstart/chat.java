@@ -40,6 +40,10 @@ public class chat extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final String MY_PREFS_NAME = "";
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        final String sender = prefs.getString("user", "user");
+
         mensaje=(EditText)findViewById(R.id.editText);
         tv = (TextView)findViewById(R.id.editText1);
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(API).build();
@@ -50,7 +54,7 @@ public class chat extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                messenger.postToUser(user, new GlobalMessage(mensaje.getText().toString(), "JL"), new Callback<PostCallback>() {
+                messenger.postToUser(user, new GlobalMessage(mensaje.getText().toString(), sender), new Callback<PostCallback>() {
                     @Override
                     public void success(PostCallback postCallback, Response response) {
                         String whatever,contenido="";

@@ -40,8 +40,19 @@ public class Dash extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(API).build();
+                messenger = restAdapter.create(MessApi.class);
+                messenger.notifyEveryone(new Callback<String>(){
+                    @Override
+                    public void success(String status, Response response){
+
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error){
+
+                    }
+                });
             }
         });
 
